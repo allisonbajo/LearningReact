@@ -22,3 +22,4 @@ function CoreConcept(props) {
 
 
 export default CoreConcept;
+

@@ -19,3 +19,10 @@ header h1 {
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
 }
 
+header p {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #8964b0;
+  font-family: "Roboto Condensed", sans-serif;
+}
+

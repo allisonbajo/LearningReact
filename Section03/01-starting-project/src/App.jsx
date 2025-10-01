@@ -6,6 +6,10 @@ import { CORE_CONCEPTS } from './data.js';
 
 
 function App() {
+  function handleSelect() {
+    console.log('Hello World - selected');
+  }
+
   // This is the syntax for the splitting of data elements into the fields.
   // <CoreConcept {... CORE_CONCEPTS[1]}
   return (
@@ -28,8 +32,12 @@ function App() {
         <section id="examples">
           <h2>Examples</h2>
           <menu>
-            <TabButton />
+            <TabButton onSelect={handleSelect}>Component</TabButton>
+            <TabButton onSelect={handleSelect}>JSX</TabButton>
+            <TabButton onSelect={handleSelect}>Props</TabButton>
+            <TabButton onSelect={handleSelect}>State</TabButton>
           </menu>
+          Dynamic Content
         </section>
       </main>
     </div>
@@ -37,3 +45,4 @@ function App() {
 }
 
 export default App;
+

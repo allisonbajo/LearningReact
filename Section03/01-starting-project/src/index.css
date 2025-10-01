@@ -19,13 +19,6 @@ html {
   min-height: 80rem;
 }
 
-header p {
-  margin: 0;
-  font-size: 1.25rem;
-  color: #8964b0;
-  font-family: "Roboto Condensed", sans-serif;
-}
-
 main {
   width: 90%;
   max-width: 50rem;
