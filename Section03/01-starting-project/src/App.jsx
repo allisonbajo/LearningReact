@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Header from './components/Header/Header.jsx'
 import CoreConcept from './components/CoreConcept.jsx'
 import TabButton from './components/TabButton.jsx'
@@ -6,8 +8,19 @@ import { CORE_CONCEPTS } from './data.js';
 
 
 function App() {
-  function handleSelect() {
-    console.log('Hello World - selected');
+  console.log('[App] Rendered')
+
+  const [ selectedTopic, setSelectedTopic ] = useState('Please click a button');
+  //let tabContent = 'Please click a button';
+
+  function handleSelect(selectedButton) {
+    // selectedButton => 'components', 'jsx', 'props', 'state'
+    //tabContent = selectedButton;
+    setSelectedTopic(selectedButton);
+    //console.log('Pressed - ' + tabContent);
+
+    // This will show the old value
+    console.log('Pressed - ' + selectedButton);
   }
 
   // This is the syntax for the splitting of data elements into the fields.
@@ -32,12 +45,12 @@ function App() {
         <section id="examples">
           <h2>Examples</h2>
           <menu>
-            <TabButton onSelect={handleSelect}>Component</TabButton>
-            <TabButton onSelect={handleSelect}>JSX</TabButton>
-            <TabButton onSelect={handleSelect}>Props</TabButton>
-            <TabButton onSelect={handleSelect}>State</TabButton>
+            <TabButton onSelect={() => handleSelect('components')}>Component</TabButton>
+            <TabButton onSelect={() => handleSelect('jsx')}>JSX</TabButton>
+            <TabButton onSelect={() => handleSelect('props')}>Props</TabButton>
+            <TabButton onSelect={() => handleSelect('state')}>State</TabButton>
           </menu>
-          Dynamic Content
+          {selectedTopic}
         </section>
       </main>
     </div>
