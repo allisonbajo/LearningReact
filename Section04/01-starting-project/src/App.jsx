@@ -4,17 +4,15 @@ import Examples from './components/Examples.jsx';
 
 
 function App() {
-  console.log('APP COMPONENT EXECUTING');
+    console.log('APP COMPONENT EXECUTING');
 
-  return (
-    <>
-      <Header />
-      <main>
-        <CoreConcepts />
-        <Examples />
-      </main>
-    </>
-  );
+    return (<>
+        <Header />
+        <main>
+            <CoreConcepts />
+            <Examples />
+        </main>
+    </>);
 }
 
 
