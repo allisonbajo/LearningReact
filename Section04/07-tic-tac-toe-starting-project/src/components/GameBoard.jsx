@@ -3,19 +3,24 @@ import { useState } from 'react';
 const initialGameBoard = [
     [null, null, null],
     [null, null, null],
-    [null, null, null]
+    [null, null, null],
 ];
 
-function GameBoard() {
+function GameBoard({ activePlayerSymbol, onSelectSquare }) {
     const [ gameBoard, setGameBoard ] = useState(initialGameBoard);
+    // const [] = useState();
 
     function handleSelectSquare(rowIndex, colIndex) {
-        console.log(`row ${rowIndex}, col ${colIndex}`)
+        // console.log(`row ${rowIndex}, col ${colIndex}`);
         setGameBoard((prevGameBoard) => {
             const updatedGameBoard = [...prevGameBoard.map(innerArray => [...innerArray])];
-            updatedGameBoard[rowIndex, colIndex] = "X";
+            // console.log(updatedGameBoard);
+            updatedGameBoard[rowIndex][colIndex] = activePlayerSymbol;
+            // console.log(updatedGameBoard);
             return updatedGameBoard;
         });
+
+        onSelectSquare();
     }
 
     return (
