@@ -3,36 +3,30 @@ import { useState } from 'react';
 import Player from './components/Player.jsx';
 import GameBoard from './components/GameBoard.jsx';
 import Log from './components/Log.jsx';
+import GameOver from './components/GameOver.jsx';
 
 import { WINNING_COMBINATIONS } from './winning-combinations.js';
 
+const PLAYERS = {
+    X: 'Player 1',
+    O: 'Player 2',
+}
 
-const initialGameBoard = [
+const INITIAL_GAMEBOARD = [
     [null, null, null],
     [null, null, null],
     [null, null, null],
 ];
 
-function derivedActivePlayer(gameTurns) {
-    let currentPlayer = 'X';
-    if (gameTurns.length > 0 && gameTurns[0].player === 'X') {
-        currentPlayer = 'O';
-    }
-
-    return currentPlayer;
-}
-
-function App() {
-    const [ gameTurns, setGameTurns ] = useState([]);
-    // Instead of using a state to indicate if there is a winner
-    // Simply derive it from the existing data
-    // const [ hasWinner, setHasWinner ] = useState(false);
-    
-    // const [ activePlayer, setActivePlayer ] = useState('X');
-
-    const activePlayer = derivedActivePlayer(gameTurns);
-
-    let gameBoard = initialGameBoard;
+function deriveGameBoard(gameTurns) {
+    // There was a hard bug here originally
+    // The array needs to be deep copied or it will retain the updated gameBoard
+    // Arrays are by reference and the initialGameBoard would have retained
+    // the previous game session.
+    // SOLUTION: A deep copy will guarantee that the initialGameBoard will always 
+    // be filled with nulls.
+    // This works since the game board is derived from gameTurns
+    let gameBoard = [...INITIAL_GAMEBOARD.map(array => [...array])];
 
     for (const turn of gameTurns) {
         const { square, player } = turn;
@@ -41,6 +35,21 @@ function App() {
         gameBoard[row][col] = player;
     }
 
+    return gameBoard;
+}
+
+function derivedActivePlayer(gameTurns) {
+    // const [ activePlayer, setActivePlayer ] = useState('X');
+
+    let currentPlayer = 'X';
+    if (gameTurns.length > 0 && gameTurns[0].player === 'X') {
+        currentPlayer = 'O';
+    }
+
+    return currentPlayer;
+}
+
+function deriveWinner(gameBoard, players) {
     let winner = null;
 
     for (const combination of WINNING_COMBINATIONS) {
@@ -53,9 +62,24 @@ function App() {
             && firstSquareSymbol === secondSquareSymbol 
             && firstSquareSymbol === thirdSquareSymbol
         ) {
-            winner = firstSquareSymbol;
+            winner = players[firstSquareSymbol];
         }
     }
+
+    return winner;
+}
+
+function App() {
+    const [ players, setPlayers ] = useState(PLAYERS);
+    const [ gameTurns, setGameTurns ] = useState([]);
+    // Instead of using a state to indicate if there is a winner
+    // Simply derive it from the existing data
+    // const [ hasWinner, setHasWinner ] = useState(false);
+    
+    const activePlayer = derivedActivePlayer(gameTurns);
+    const gameBoard = deriveGameBoard(gameTurns);
+    const winner = deriveWinner(gameBoard, players);
+    const hasDraw = gameTurns.length === 9 && !winner;
 
     function handleSelectSquare(rowIndex, colIndex) {
         // setActivePlayer((currActivePlayer) => currActivePlayer === 'X' ? 'O' : 'X');
@@ -78,14 +102,37 @@ function App() {
         });
     }
 
+    function handleRematch() {
+        setGameTurns([]);
+    }
+
+    function handlePlayerNameChange(symbol, newName) {
+        setPlayers((prevPlayers) => {
+            return {
+                ...prevPlayers, 
+                [symbol]: newName
+            };
+        });
+    }
+
     return (
         <main>
             <div id="game-container">
                 <ol id="players" className="highlight-player">
-                    <Player initialName="Player 1" symbol="X" isActive={activePlayer === 'X'} />
-                    <Player initialName="Player 2" symbol="O" isActive={activePlayer === 'O'} />
+                    <Player
+                        initialName={PLAYERS.X} 
+                        symbol="X" 
+                        isActive={activePlayer === 'X'} 
+                        onChangeName={handlePlayerNameChange}
+                    />
+                    <Player 
+                        initialName={PLAYERS.O} 
+                        symbol="O" 
+                        isActive={activePlayer === 'O'} 
+                        onChangeName={handlePlayerNameChange}
+                    />
                 </ol>
-                {winner && <p>Player {winner} wins!</p>}
+                {(winner || hasDraw) && <GameOver winner={winner} onRestart={handleRematch} />}
                 <GameBoard 
                     board={gameBoard}
                     onSelectSquare={handleSelectSquare}
