@@ -20,6 +20,11 @@ export default function AuthInputs() {
   const emailNotValid = submitted && !enteredEmail.includes('@');
   const passwordNotValid = submitted && enteredPassword.trim().length < 6;
 
+  // NOTE:
+  // Using inline styles simplifies dynamic/conditional styling
+  // style={{
+  //     backgroundColor: emailNotValid ? : '#fed2d2' : '#d1d5db'
+  // }}
   return (
     <div id="auth-inputs">
       <div className="controls">
@@ -27,6 +32,9 @@ export default function AuthInputs() {
           <label>Email</label>
           <input
             type="email"
+            // style={{
+            //   backgroundColor: emailNotValid ? '#fed2d2' : '#d1d5db'
+            // }}
             className={emailNotValid ? 'invalid' : undefined}
             onChange={(event) => handleInputChange('email', event.target.value)}
           />
