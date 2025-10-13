@@ -1,10 +1,12 @@
+import logoImg from '../assets/investment-calculator-logo.png';
+
 function Header() {
-    return (<>
+    return (
         <header id="header">
-            <img src="investment-calculator-logo.png" alt="A simple logo" />
+            <img src={logoImg} alt="A simple logo" />
             <h1>Investment Calculator</h1>
         </header>
-    </>);
+    );
 }
 
 
