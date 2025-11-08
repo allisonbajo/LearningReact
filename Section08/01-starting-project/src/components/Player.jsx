@@ -19,6 +19,11 @@ export default function Player() {
     // setPlayerName(enteredName);
     // setSubmitted(true);
     setEnteredName(playerName.current.value);
+
+    // NOTE: This part is not a best practice
+    // React is a declarative library. Directly changing the contents
+    // of the DOM is not recommended.
+    playerName.current.value = '';
   }
 
   return (
